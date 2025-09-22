@@ -3,56 +3,101 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Nonton Film Gratis</title>
+  <title>FilmSeries</title>
   <style>
     body {
+      margin: 0;
       font-family: Arial, sans-serif;
-      text-align: center;
-      background: #111;
+      background: url('https://i.ibb.co/jwYtPCf/cinema-bg.jpg') no-repeat center center fixed;
+      background-size: cover;
       color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: start;
+      min-height: 100vh;
+      position: relative;
       padding: 20px;
     }
-    .container {
-      max-width: 600px;
-      margin: auto;
+    /* Overlay hitam transparan */
+    body::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.65);
+      z-index: 0;
+    }
+    .content {
+      z-index: 1;
+      width: 100%;
+      max-width: 500px;
+      text-align: center;
+      margin-top: 50px;
+    }
+    .profile img {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      border: 3px solid #fff;
+      margin-bottom: 15px;
     }
     h1 {
-      color: #f39c12;
+      font-size: 28px;
+      margin-bottom: 8px;
+      color: #f1c40f;
     }
-    .btn {
-      display: inline-block;
-      margin: 15px;
-      padding: 15px 25px;
-      font-size: 18px;
-      color: #fff;
-      background: #e74c3c;
+    p {
+      color: #ddd;
+      margin-bottom: 25px;
+    }
+    .links {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+    a.btn {
+      display: block;
       text-decoration: none;
-      border-radius: 8px;
+      padding: 15px;
+      border-radius: 10px;
+      background: rgba(255,255,255,0.1);
+      color: #fff;
+      font-weight: bold;
+      text-align: center;
       transition: 0.3s;
+      backdrop-filter: blur(5px);
     }
-    .btn:hover {
-      background: #c0392b;
+    a.btn:hover {
+      background: rgba(241,196,15,0.8);
+      color: #000;
     }
-    .note {
-      font-size: 14px;
+    .footer {
+      margin-top: 40px;
+      font-size: 12px;
       color: #aaa;
-      margin-top: 20px;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>🎬 Nonton Film Terbaru 2025</h1>
-    <p>Klik tombol di bawah untuk mulai streaming atau download.</p>
-    
-    <!-- Ganti LINK_ADSTERRA dengan directlink/pop dari Adsterra -->
-    <a class="btn" href="https://www.revenuecpmgate.com/en8jk71xj2?key=52c4f6187719b3352043e806b4117128" target="_blank">Tonton Sekarang</a>
-    <a class="btn" href="https://www.revenuecpmgate.com/en8jk71xj2?key=52c4f6187719b3352043e806b4117128" target="_blank">Download Gratis</a>
-    
-    <div class="note">
-      ⚠️ Gunakan browser terbaik (Chrome/Opera) untuk hasil maksimal.<br>
-      Semua link mengarah ke server cepat dan aman.
+  <div class="content">
+    <div class="profile">
+      <!-- Ganti link foto sesuai kebutuhan -->
+      <img src="https://i.ibb.co/7jZ0jX0/cinema.png" alt="profile">
+    </div>
+    <h1>FilmSeries Official</h1>
+    <p>Streaming & Download Film Terbaru 2025</p>
+
+    <div class="links">
+      <a class="btn" href="LINK_ADSTERRA" target="_blank">🎬 Tonton Sekarang</a>
+      <a class="btn" href="LINK_ADSTERRA" target="_blank">⬇️ Download Film</a>
+      <a class="btn" href="https://t.me/NAMA_CHANNEL" target="_blank">📢 Join Telegram</a>
+      <a class="btn" href="https://youtube.com/" target="_blank">▶️ YouTube Official</a>
+    </div>
+
+    <div class="footer">
+      © 2025 FilmSeries | Powered by GitHub Pages
     </div>
   </div>
 </body>
 </html>
+
