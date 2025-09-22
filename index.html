@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>FilmSeries</title>
+  <title>FilmSeries Responsive</title>
   <style>
     :root{
       --accent:#f1c40f;
@@ -11,105 +11,114 @@
       --btn-green:#2ecc71;
       --btn-blue:#3498db;
     }
-    *{box-sizing:border-box}
+    *{box-sizing:border-box;margin:0;padding:0}
     body{
-      margin:0;font-family:system-ui,Arial,sans-serif;color:#fff;
-      min-height:100vh;display:flex;align-items:center;justify-content:center;
-      overflow-x:hidden;position:relative;
+      font-family:sans-serif;color:#fff;min-height:100vh;
+      display:flex;align-items:center;justify-content:center;
+      position:relative;overflow:hidden;
     }
-    /* background slideshow container */
-    .bg-slideshow{
-      position:fixed;inset:0;z-index:-1;
-    }
-    .bg-slideshow img{
-      position:absolute;inset:0;width:100%;height:100%;
-      object-fit:cover;opacity:0;transition:opacity 1.5s ease-in-out;
-    }
+    /* background slideshow */
+    .bg-slideshow{position:fixed;inset:0;z-index:-2}
+    .bg-slideshow img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 1.5s}
     .bg-slideshow img.active{opacity:1}
-    /* overlay */
-    .overlay{
-      position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:0;backdrop-filter:blur(2px);
-    }
-    .wrap{
-      position:relative;z-index:1;width:100%;max-width:860px;padding:28px 20px 40px;
-      animation:fadeIn 1s ease-out;
-    }
-    header{display:flex;gap:12px;align-items:center;margin-bottom:14px;animation:slideDown 1s ease-out}
-    .logo{width:40px;height:40px;filter:drop-shadow(0 2px 6px rgba(0,0,0,.5))}
-    h1{margin:0;color:var(--accent);font-weight:800;letter-spacing:.3px}
-    p.lead{color:#ddd;margin:8px 0 18px}
-    .card{background:rgba(20,20,20,.75);border:1px solid rgba(255,255,255,.08);border-radius:14px;
-      padding:18px;box-shadow:0 12px 28px rgba(0,0,0,.35);animation:fadeInUp 1.2s ease-out}
-    .links{display:flex;flex-direction:column;gap:14px;margin-top:10px}
+    .overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:-1;backdrop-filter:blur(2px)}
+
+    .wrap{z-index:1;width:100%;max-width:860px;padding:28px 20px 40px;text-align:center}
+    h1{color:var(--accent);margin-bottom:12px}
+    p.lead{color:#ccc;margin-bottom:18px}
+    .links{display:flex;flex-direction:column;gap:14px}
     a.btn{
-      display:flex;align-items:center;gap:10px;justify-content:center;
-      text-decoration:none;padding:16px 18px;font-weight:700;border-radius:12px;color:#fff;
-      transition:.25s ease;box-shadow:0 6px 14px rgba(0,0,0,.25);
-      opacity:0;transform:translateY(30px);animation:fadeUp .8s forwards
+      display:flex;align-items:center;justify-content:center;gap:8px;
+      text-decoration:none;font-weight:700;color:#fff;
+      padding:16px;border-radius:12px;transition:.2s;
+      box-shadow:0 4px 12px rgba(0,0,0,.3);font-size:16px
     }
-    .links a:nth-child(1){animation-delay:.3s}
-    .links a:nth-child(2){animation-delay:.5s}
-    .links a:nth-child(3){animation-delay:.7s}
     .red{background:var(--btn-red)}.green{background:var(--btn-green)}.blue{background:var(--btn-blue)}
-    a.btn:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 0 18px rgba(255,255,255,.7);filter:brightness(1.08)}
-    .btn svg{width:20px;height:20px;flex:0 0 20px}
-    .note{margin-top:14px;color:#bdbdbd;font-size:13px}
-    footer{margin-top:18px;color:#aaa;font-size:12px;text-align:center;animation:fadeIn 1.5s}
-    @media(max-width:480px){.wrap{padding:20px 14px}a.btn{padding:14px 14px;font-size:15px}.btn svg{width:18px;height:18px}h1{font-size:22px}}
-    @keyframes fadeIn{from{opacity:0}to{opacity:1}}
-    @keyframes slideDown{from{opacity:0;transform:translateY(-20px)}to{opacity:1;transform:translateY(0)}}
-    @keyframes fadeInUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-    @keyframes fadeUp{to{opacity:1;transform:translateY(0)}}
+    a.btn:hover{filter:brightness(1.1);transform:translateY(-2px)}
+    .btn svg{width:20px;height:20px}
+    .note{margin-top:14px;font-size:13px;color:#bbb}
+    footer{margin-top:20px;font-size:12px;color:#999}
+
+    /* Responsive mobile */
+    @media(max-width:480px){
+      .wrap{max-width:420px;padding:20px}
+      h1{font-size:22px}
+      p.lead{font-size:14px}
+      a.btn{font-size:15px;padding:14px}
+      .btn svg{width:18px;height:18px}
+      footer{font-size:11px}
+    }
   </style>
 </head>
 <body>
   <!-- Background Slideshow -->
   <div class="bg-slideshow">
-    <img src="https://awsimages.detik.net.id/community/media/visual/2024/03/29/vina-sebelum-7-hari.jpeg?w=1200" class="active" alt="Vina Sebelum 7 Hari">
-    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTiS7jVqvOPiwAWTskI6RAA-6qnWpNiTPRYPBB87flq7xIdRougu3iEbug&s" alt="Poster 1">
-    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTGb4bAxdo0aGPAJFXXpMqCRRXgGr8xhhKjZBEctsnA016tGivBQdGCaiw&s" alt="Poster 2">
+    <img src="https://awsimages.detik.net.id/community/media/visual/2024/03/29/vina-sebelum-7-hari.jpeg?w=1000" class="active" alt="Vina">
+    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSHHTJIN5XsX3cyNoG2jrYsnr8nzNQvYaMW5Q&s" alt="Poster 1">
+    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQdH7fX5puPeWY2HbqzAu_AaTO0xdgLfKX3YQ&s" alt="Poster 2">
   </div>
   <div class="overlay"></div>
 
   <div class="wrap">
-    <header>
-      <img class="logo" src="https://i.ibb.co/7jZ0jX0/cinema.png" alt="logo">
-      <h1>Nonton Film Terbaru</h1>
-    </header>
-
-    <div class="card">
-      <p class="lead">Pilih tombol di bawah:</p>
-      <div class="links">
-        <a class="btn red" href="https://www.revenuecpmgate.com/en8jk71xj2?key=52c4f6187719b3352043e806b4117128" target="_blank" rel="noopener">
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-          <span>🎬 Tonton Sekarang</span>
-        </a>
-        <a class="btn green" href="https://www.revenuecpmgate.com/en8jk71xj2?key=52c4f6187719b3352043e806b4117128" target="_blank" rel="noopener">
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M5 20h14v-2H5v2zm7-18v10.17l3.59-3.58L17 10l-5 5-5-5 1.41-1.41L11 12.17V2h1z"/></svg>
-          <span>⬇️ Download Gratis</span>
-        </a>
-        <a class="btn blue" href="https://t.me/filmterbarurilis" target="_blank" rel="noopener">
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M9.04 15.04 8.9 18.5c.36 0 .52-.15.71-.33l1.7-1.62 3.52 2.58c.64.36 1.11.17 1.28-.59l2.33-10.93.01-.01c.21-.98-.35-1.36-1-.1L5.3 9.86c-.96.38-.95.93-.17 1.18l3.58 1.12 8.3-5.24c.39-.24.74-.11.45.13l-8.42 7.99z"/></svg>
-          <span>📢 Join Channel Telegram</span>
-        </a>
-      </div>
-      <div class="note">Jika link tidak muncul, refresh halaman (Ctrl/⌘+R).</div>
+    <h1 id="title">🎬 Nonton Film Terbaru</h1>
+    <p class="lead">Pilih tombol di bawah:</p>
+    <div class="links">
+      <a class="btn red" href="#" onclick="goLink(event,'tonton')">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+        Tonton Sekarang
+      </a>
+      <a class="btn green" href="#" onclick="goLink(event,'download')">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M5 20h14v-2H5v2zm7-18v10.17l3.59-3.58L17 10l-5 5-5-5 1.41-1.41L11 12.17V2h1z"/></svg>
+        Download Gratis
+      </a>
+      <a class="btn blue" href="https://t.me/filmterbarurilis" target="_blank">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M9.04 15.04 8.9 18.5c.36 0 .52-.15.71-.33l1.7-1.62 3.52 2.58c.64.36 1.11.17 1.28-.59l2.33-10.93c.21-.98-.35-1.36-1-.1L5.3 9.86c-.96.38-.95.93-.17 1.18l3.58 1.12 8.3-5.24c.39-.24.74-.11.45.13l-8.42 7.99z"/></svg>
+        Join Telegram
+      </a>
     </div>
-
-    <footer>© 2025 FilmSeries • Powered by GitHub Pages</footer>
+    <div class="note">Klik pertama → iklan, berikutnya → partner (reset 24 jam).</div>
+    <footer>© 2025 FilmSeries Responsive</footer>
   </div>
 
   <script>
-    // JS untuk slideshow background
-    const slides = document.querySelectorAll('.bg-slideshow img');
-    let current = 0;
-    setInterval(() => {
+    // slideshow background
+    const slides=document.querySelectorAll('.bg-slideshow img');
+    let current=0;
+    setInterval(()=>{
       slides[current].classList.remove('active');
-      current = (current + 1) % slides.length;
+      current=(current+1)%slides.length;
       slides[current].classList.add('active');
-    }, 6000); // ganti tiap 6 detik
+    },5000);
+
+    // tombol aman (klik pertama Adsterra, berikutnya partner, reset 24 jam)
+    function goLink(e,type){
+      e.preventDefault();
+      const adLink="https://www.revenuecpmgate.com/en8jk71xj2?key=52c4f6187719b3352043e806b4117128"; // ganti
+      const partnerLink="https://castordownloads.com/"; // ganti
+      const key=type+"Clicked";
+
+      const data=JSON.parse(localStorage.getItem(key));
+      const now=Date.now();
+      const oneDay=24*60*60*1000;
+
+      if(!data||(now-data.time)>oneDay){
+        localStorage.setItem(key,JSON.stringify({time:now}));
+        window.location.href=adLink;
+      } else {
+        window.location.href=partnerLink;
+      }
+    }
+
+    // deteksi device
+    const isMobile=/iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    if(isMobile){
+      document.getElementById("title").innerText="📱 Nonton Film di HP";
+    } else {
+      document.getElementById("title").innerText="💻 Nonton Film di PC";
+    }
   </script>
 </body>
 </html>
+
 
 
