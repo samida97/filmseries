@@ -1,124 +1,291 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>FilmSeries Responsive</title>
-  <style>
-    :root{
-      --accent:#f1c40f;
-      --btn-red:#e74c3c;
-      --btn-green:#2ecc71;
-      --btn-blue:#3498db;
-    }
-    *{box-sizing:border-box;margin:0;padding:0}
-    body{
-      font-family:sans-serif;color:#fff;min-height:100vh;
-      display:flex;align-items:center;justify-content:center;
-      position:relative;overflow:hidden;
-    }
-    /* background slideshow */
-    .bg-slideshow{position:fixed;inset:0;z-index:-2}
-    .bg-slideshow img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 1.5s}
-    .bg-slideshow img.active{opacity:1}
-    .overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:-1;backdrop-filter:blur(2px)}
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>FilmSeries – Koleksi</title>
+<style>
+  :root{
+    --bg:#0f0f10; --card:#17181b; --muted:#a9b0bd;
+    --watch:#e91e63; --trailer:#2ecc71; --tele:#0088cc;
+    --accent:#f5c344;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:#fff;font-family:system-ui,Arial,sans-serif}
+  header{max-width:1100px;margin:18px auto 6px;padding:0 16px;display:flex;align-items:center;gap:10px}
+  header h1{margin:0;font-size:22px}
+  header .sub{color:var(--muted);font-size:14px}
+  .grid{max-width:1100px;margin:8px auto 30px;padding:0 16px;
+        display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:16px}
+  .card{background:var(--card);border:1px solid rgba(255,255,255,.06);border-radius:14px;overflow:hidden;
+        box-shadow:0 10px 26px rgba(0,0,0,.25);display:flex;flex-direction:column}
+  .thumb{position:relative;aspect-ratio:2/3;background:#222;overflow:hidden}
+  .thumb img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .35s ease}
+  .card:hover .thumb img{transform:scale(1.06)}
+  .rating{position:absolute;left:8px;top:8px;background:rgba(0,0,0,.6);color:#ffd166;
+          font-weight:700;font-size:12px;border-radius:8px;padding:4px 6px}
+  .dur{position:absolute;right:8px;top:8px;background:rgba(255,255,255,.12);font-size:12px;
+       padding:4px 6px;border-radius:8px;color:#eee}
+  .body{padding:12px;display:flex;flex-direction:column;gap:8px;flex:1}
+  .title{font-weight:800;line-height:1.2}
+  .meta{color:var(--muted);font-size:12px;min-height:30px}
+  .btns{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:auto}
+  .btn{display:inline-block;text-align:center;border-radius:10px;padding:10px 0;
+       font-weight:800;color:#fff;text-decoration:none;cursor:pointer;transition:filter .2s}
+  .btn:hover{filter:brightness(1.08)}
+  .btn.trailer{background:var(--trailer)}
+  .btn.watch{background:var(--watch)}
+  .telegram-wrap{text-align:center;margin:0 auto 30px}
+  .btn-tele{background:var(--tele);padding:14px 26px;border-radius:12px;
+            text-decoration:none;color:#fff;font-weight:800;
+            box-shadow:0 4px 14px rgba(0,0,0,.3);display:inline-block}
+  footer{max-width:1100px;margin:0 auto 24px;padding:0 16px;color:var(--muted);font-size:12px}
 
-    .wrap{z-index:1;width:100%;max-width:860px;padding:28px 20px 40px;text-align:center}
-    h1{color:var(--accent);margin-bottom:12px}
-    p.lead{color:#ccc;margin-bottom:18px}
-    .links{display:flex;flex-direction:column;gap:14px}
-    a.btn{
-      display:flex;align-items:center;justify-content:center;gap:8px;
-      text-decoration:none;font-weight:700;color:#fff;
-      padding:16px;border-radius:12px;transition:.2s;
-      box-shadow:0 4px 12px rgba(0,0,0,.3);font-size:16px
-    }
-    .red{background:var(--btn-red)}.green{background:var(--btn-green)}.blue{background:var(--btn-blue)}
-    a.btn:hover{filter:brightness(1.1);transform:translateY(-2px)}
-    .btn svg{width:20px;height:20px}
-    .note{margin-top:14px;font-size:13px;color:#bbb}
-    footer{margin-top:20px;font-size:12px;color:#999}
+  /* Loading overlay */
+  .overlay-loading{position:fixed;inset:0;background:rgba(0,0,0,.75);display:none;align-items:center;justify-content:center;z-index:9999}
+  .loader-box{background:#0b1220;padding:22px;border-radius:12px;max-width:420px;width:92%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.7)}
+  .loader-box h3{margin:0 0 8px;color:var(--accent)}
+  .loader-box p{margin:0 0 12px;color:#cbd5e1}
+  .count{font-size:34px;font-weight:900;color:#fff;margin-bottom:10px}
+  .small{font-size:13px;color:#9ca3af}
+  .action-row{display:flex;gap:10px;justify-content:center;margin-top:10px}
+  .ghost{background:transparent;border:1px solid rgba(255,255,255,.08);color:#e5e7eb;padding:10px 12px;border-radius:10px;cursor:pointer}
+  .primary{background:var(--watch);border:0;color:#fff;padding:10px 14px;border-radius:10px;cursor:pointer}
+  .copy-btn{background:transparent;border:1px solid rgba(255,255,255,.08);color:#fff;padding:8px 10px;border-radius:8px;cursor:pointer}
 
-    /* Responsive mobile */
-    @media(max-width:480px){
-      .wrap{max-width:420px;padding:20px}
-      h1{font-size:22px}
-      p.lead{font-size:14px}
-      a.btn{font-size:15px;padding:14px}
-      .btn svg{width:18px;height:18px}
-      footer{font-size:11px}
-    }
-  </style>
+  @media (max-width:480px){
+    header h1{font-size:18px}
+    .grid{gap:12px}
+  }
+</style>
 </head>
 <body>
-  <!-- Background Slideshow -->
-  <div class="bg-slideshow">
-    <img src="https://awsimages.detik.net.id/community/media/visual/2024/03/29/vina-sebelum-7-hari.jpeg?w=1000" class="active" alt="Vina">
-    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSHHTJIN5XsX3cyNoG2jrYsnr8nzNQvYaMW5Q&s" alt="Poster 1">
-    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQdH7fX5puPeWY2HbqzAu_AaTO0xdgLfKX3YQ&s" alt="Poster 2">
-  </div>
-  <div class="overlay"></div>
 
-  <div class="wrap">
-    <h1 id="title">🎬 Nonton Film Terbaru</h1>
-    <p class="lead">Pilih tombol di bawah:</p>
-    <div class="links">
-      <a class="btn red" href="#" onclick="goLink(event,'tonton')">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-        Tonton Sekarang
-      </a>
-      <a class="btn green" href="#" onclick="goLink(event,'download')">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M5 20h14v-2H5v2zm7-18v10.17l3.59-3.58L17 10l-5 5-5-5 1.41-1.41L11 12.17V2h1z"/></svg>
-        Download Gratis
-      </a>
-      <a class="btn blue" href="https://t.me/filmterbarurilis" target="_blank">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M9.04 15.04 8.9 18.5c.36 0 .52-.15.71-.33l1.7-1.62 3.52 2.58c.64.36 1.11.17 1.28-.59l2.33-10.93c.21-.98-.35-1.36-1-.1L5.3 9.86c-.96.38-.95.93-.17 1.18l3.58 1.12 8.3-5.24c.39-.24.74-.11.45.13l-8.42 7.99z"/></svg>
-        Join Telegram
-      </a>
+<header>
+  <img src="https://i.ibb.co/7jZ0jX0/cinema.png" alt="" width="28" height="28">
+  <h1>FilmSeries</h1>
+  <span class="sub">Koleksi Terbaru</span>
+</header>
+
+<section class="grid" id="grid"></section>
+
+<!-- Tombol Join Telegram -->
+<div class="telegram-wrap">
+  <a id="telegramLink" href="https://t.me/filmterbarurilis" target="_blank" class="btn-tele">🚀 Join Channel Telegram</a>
+</div>
+
+<footer>Tip: klik pertama tiap film membuka iklan (aman), klik berikutnya langsung ke partner. Reset otomatis 24 jam per film & per tombol.</footer>
+
+<!-- Loading overlay (muncul ketika user melakukan klik pertama dan menekan 'Lanjutkan') -->
+<div class="overlay-loading" id="overlay">
+  <div class="loader-box" role="dialog" aria-modal="true">
+    <h3 id="loaderTitle">Mempersiapkan Link...</h3>
+    <div class="count" id="countdown">3</div>
+    <p id="loaderText" class="small">Kami akan menampilkan link aman. Tunggu beberapa detik lalu klik Lanjutkan jika muncul.</p>
+
+    <div class="action-row" id="loaderButtons">
+      <button class="ghost" id="loaderCancel">Batal</button>
+      <button class="primary" id="loaderProceed">Lanjutkan</button>
     </div>
-    <div class="note">SEMOGA HARIMU SENIN TERUS.</div>
-    <footer>© 2025 FilmSeries Responsive</footer>
+
+    <div id="fallbackBox" style="display:none;margin-top:12px">
+      <p class="small">Jika link partner tidak terbuka (HTTP diblokir), salin link manual:</p>
+      <div style="display:flex;gap:8px;justify-content:center;margin-top:8px">
+        <input id="fallbackInput" readonly style="padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,.06);background:#0b1220;color:#fff;width:70%" />
+        <button class="copy-btn" id="fallbackCopy">Copy</button>
+      </div>
+    </div>
   </div>
+</div>
 
-  <script>
-    // slideshow background
-    const slides=document.querySelectorAll('.bg-slideshow img');
-    let current=0;
-    setInterval(()=>{
-      slides[current].classList.remove('active');
-      current=(current+1)%slides.length;
-      slides[current].classList.add('active');
-    },5000);
+<script>
+/* ================== KONFIGURASI ================== */
+/* Ganti LINK_ADSTERRA dengan smartlink Adsterra kamu */
+const LINK_ADSTERRA = "https://www.revenuecpmgate.com/en8jk71xj2?key=52c4f6187719b3352043e806b4117128";
 
-    // 
-    function goLink(e,type){
-      e.preventDefault();
-      const adLink="https://www.revenuecpmgate.com/en8jk71xj2?key=52c4f6187719b3352043e806b4117128"; // ganti
-      const partnerLink="https://castordownloads.com/"; // ganti
-      const key=type+"Clicked";
+/* Isi partner link tiap film di array MOVIES bawah (lihat property 'partner') */
+/* Klik pertama di film -> akan ke LINK_ADSTERRA (user menekan Lanjutkan), 
+   klik berikutnya (dalam 24 jam) -> akan ke partner link film itu */
+const ONE_DAY = 24*60*60*1000;
+/* ================================================ */
 
-      const data=JSON.parse(localStorage.getItem(key));
-      const now=Date.now();
-      const oneDay=24*60*60*1000;
+/* ==== Daftar 10 film contoh (ganti partner + poster sesuai kebutuhan) ==== */
+const MOVIES = [
+  {id:"perang-kota",title:"Perang Kota (2025)",genres:"Drama • History • Indonesia",duration:"119 min",rating:"★ 6.8",poster:"https://image.tmdb.org/t/p/w342/xyXGJ7.jpg",partner:"http://206.189.147.153/path-perang-kota"},
+  {id:"norma",title:"Norma (2025)",genres:"Drama • Indonesia",duration:"134 min",rating:"★ 7.5",poster:"https://image.tmdb.org/t/p/w342/8nNorma.jpg",partner:"http://206.189.147.153/path-norma"},
+  {id:"yang-tersisa",title:"Yang Tersisa Hanya Cinta (2025)",genres:"Romance • Drama",duration:"115 min",rating:"★ 7.2",poster:"https://via.placeholder.com/300x450?text=Yang+Tersisa",partner:"http://206.189.147.153/path-tersisa"},
+  {id:"jodoh-3-bujang",title:"Jodoh 3 Bujang (2025)",genres:"Comedy • Romance",duration:"108 min",rating:"★ 6.9",poster:"https://via.placeholder.com/300x450?text=Jodoh+3+Bujang",partner:"http://206.189.147.153/path-jodoh"},
+  {id:"gamophobia",title:"Gamophobia (2025)",genres:"Drama • Psychological",duration:"120 min",rating:"★ 7.1",poster:"https://via.placeholder.com/300x450?text=Gamophobia",partner:"http://206.189.147.153/path-gamophobia"},
+  {id:"keajaiban-air-mata",title:"Keajaiban Air Mata (2025)",genres:"Drama • Family",duration:"110 min",rating:"★ 7.4",poster:"https://via.placeholder.com/300x450?text=Keajaiban+Air+Mata",partner:"http://206.189.147.153/path-airmata"},
+  {id:"cinta-tepat",title:"Cinta Tak Pernah Tepat Waktu (2025)",genres:"Romance • Drama",duration:"117 min",rating:"★ 7.0",poster:"https://via.placeholder.com/300x450?text=Cinta+Tak+Pernah+Tepat",partner:"http://206.189.147.153/path-cinta"},
+  {id:"paris-in-bali",title:"Paris in Bali (2025)",genres:"Romance • Comedy",duration:"105 min",rating:"★ 6.7",poster:"https://via.placeholder.com/300x450?text=Paris+in+Bali",partner:"http://206.189.147.153/path-paris"},
+  {id:"sarung-bapak",title:"Sarung Untuk Bapak (2025)",genres:"Drama • Family",duration:"111 min",rating:"★ 7.3",poster:"https://via.placeholder.com/300x450?text=Sarung+Untuk+Bapak",partner:"http://206.189.147.153/path-sarung"},
+  {id:"vina",title:"Sebelum 7 Hari (2025)",genres:"Horror • Indonesia",duration:"107 min",rating:"★ 7.0",poster:"https://awsimages.detik.net.id/community/media/visual/2024/03/29/vina-sebelum-7-hari.jpeg?w=400",partner:"http://206.189.147.153/ngod-289-seorang-istri-sederhana/"}
+];
+/* ====================================================================== */
 
-      if(!data||(now-data.time)>oneDay){
-        localStorage.setItem(key,JSON.stringify({time:now}));
-        window.location.href=adLink;
-      } else {
-        window.location.href=partnerLink;
-      }
+/* ====== Generate grid ====== */
+const grid = document.getElementById('grid');
+grid.innerHTML = MOVIES.map(m => `
+  <article class="card" data-id="${m.id}" data-partner="${m.partner}">
+    <div class="thumb">
+      <span class="rating">${m.rating}</span><span class="dur">${m.duration}</span>
+      <img src="${m.poster}" alt="${m.title}">
+    </div>
+    <div class="body">
+      <div class="title">${m.title}</div>
+      <div class="meta">${m.genres}</div>
+      <div class="btns">
+        <a class="btn trailer" href="#" data-type="trailer">TRAILER</a>
+        <a class="btn watch"   href="#" data-type="watch">WATCH</a>
+      </div>
+    </div>
+  </article>
+`).join('');
+
+/* ====== Elements loading overlay ====== */
+const overlay = document.getElementById('overlay');
+const countdownEl = document.getElementById('countdown');
+const loaderTitle = document.getElementById('loaderTitle');
+const loaderText = document.getElementById('loaderText');
+const loaderProceed = document.getElementById('loaderProceed');
+const loaderCancel = document.getElementById('loaderCancel');
+const fallbackBox = document.getElementById('fallbackBox');
+const fallbackInput = document.getElementById('fallbackInput');
+const fallbackCopy = document.getElementById('fallbackCopy');
+
+let currentPending = null; // {movieId, type, partner}
+let countdownTimer = null;
+
+/* ====== Click handler (delegation) ====== */
+grid.addEventListener('click', function(e){
+  const btn = e.target.closest('a.btn');
+  if(!btn) return;
+  e.preventDefault();
+
+  const card = btn.closest('.card');
+  const movieId = card.dataset.id;
+  const partner = card.dataset.partner;
+  const type = btn.dataset.type; // "trailer" or "watch"
+
+  const key = `${movieId}:${type}`;
+  const now = Date.now();
+  const raw = localStorage.getItem(key);
+  const firstTime = !raw || (now - JSON.parse(raw).time) > ONE_DAY;
+
+  if(firstTime){
+    // set flag now (so next time within 24h is considered second click)
+    localStorage.setItem(key, JSON.stringify({time: now}));
+    // show loading overlay with countdown then send user to AD_LINK
+    showLoader({movieId, type, partner}, LINK_ADSTERRA);
+  } else {
+    // already clicked today -> go directly to partner link
+    safeNavigate(partner);
+  }
+});
+
+/* ====== showLoader: tampilkan overlay + hitung mundur 3 detik ====== */
+function showLoader(pending, targetUrl){
+  currentPending = pending;
+  // set texts (customize)
+  loaderTitle.textContent = `Mempersiapkan link untuk "${getMovieTitle(pending.movieId)}"...`;
+  loaderText.textContent = "Tunggu sebentar, lalu tekan Lanjutkan untuk membuka link aman.";
+  fallbackBox.style.display = 'none';
+  fallbackInput.value = pending.partner;
+
+  countdownEl.textContent = '3';
+  overlay.style.display = 'flex';
+
+  let t = 3;
+  clearInterval(countdownTimer);
+  countdownTimer = setInterval(() => {
+    t--;
+    countdownEl.textContent = String(t);
+    if(t <= 0){
+      clearInterval(countdownTimer);
+      countdownEl.textContent = '0';
+      loaderText.textContent = "Klik Lanjutkan untuk pergi sekarang — ini tindakan kamu sendiri.";
     }
+  }, 1000);
+}
 
-    // deteksi device
-    const isMobile=/iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-    if(isMobile){
-      document.getElementById("title").innerText="📱 Nonton Film di HP";
-    } else {
-      document.getElementById("title").innerText="💻 Nonton Film di PC";
+/* cancel loader */
+loaderCancel.addEventListener('click', () => {
+  overlay.style.display = 'none';
+  clearInterval(countdownTimer);
+  currentPending = null;
+});
+
+/* proceed -> user pressed explicit button to go to AD link */
+loaderProceed.addEventListener('click', () => {
+  overlay.style.display = 'none';
+  clearInterval(countdownTimer);
+  if(!currentPending) return;
+  // Navigate to AD link (user initiated by clicking Lanjutkan)
+  safeNavigate(https://www.revenuecpmgate.com/en8jk71xj2?key=52c4f6187719b3352043e806b4117128);
+
+  // After small delay, show fallback if partner is http and browser blocks it
+  // (we will show fallback only if partner uses http)
+  setTimeout(()=>{
+    // If partner link is http (and may be blocked when user returns), we prepare fallback for later access
+    if(currentPending.partner && currentPending.partner.startsWith('http://')){
+      // Show overlay again with copy link option
+      showFallback(currentPending.partner);
     }
-  </script>
+    currentPending = null;
+  }, 1500);
+});
+
+/* fallback: show copy link UI */
+function showFallback(partnerUrl){
+  overlay.style.display = 'flex';
+  loaderTitle.textContent = "Jika link partner tidak terbuka";
+  loaderText.textContent = "Beberapa browser memblokir link HTTP dari halaman HTTPS. Salin link berikut dan buka manual jika perlu.";
+  fallbackBox.style.display = 'block';
+  fallbackInput.value = partnerUrl;
+  document.getElementById('loaderButtons').style.display = 'none';
+}
+
+/* copy fallback */
+fallbackCopy.addEventListener('click', async () => {
+  try{
+    await navigator.clipboard.writeText(fallbackInput.value);
+    fallbackCopy.textContent = 'Tersalin ✔';
+    setTimeout(()=>{ fallbackCopy.textContent = 'Copy'; overlay.style.display='none'; document.getElementById('loaderButtons').style.display = 'flex'; }, 1200);
+  }catch(e){
+    alert('Gagal menyalin. Silakan tekan dan salin manual.');
+  }
+});
+
+/* utility: get movie title from id */
+function getMovieTitle(id){
+  const m = MOVIES.find(x => x.id === id);
+  return m ? m.title : '';
+}
+
+/* safeNavigate to url (with simple fallback alert if HTTP blocked) */
+function safeNavigate(url){
+  try{
+    // direct navigation (user action)
+    window.location.href = url;
+  }catch(err){
+    alert('Gagal membuka link. Silakan salin manual:\n\n'+url);
+  }
+}
+
+/* close overlay if user clicks outside loader box */
+document.getElementById('overlay').addEventListener('click', (e) => {
+  if(e.target === document.getElementById('overlay')){
+    overlay.style.display = 'none';
+    clearInterval(countdownTimer);
+    currentPending = null;
+  }
+});
+</script>
 </body>
 </html>
+
+
 
 
 
