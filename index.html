@@ -225,8 +225,18 @@ function render(list){
     <article class="card" data-id="${m.id}" data-partner="${m.partner}" data-genres="${m.genres}">
       <div class="thumb">
         <span class="rating">${m.rating}</span><span class="dur">${m.duration}</span>
-        <img src="${m.poster}" alt="${m.title}" loading="lazy" decoding="async" referrerpolicy="no-referrer"
-             onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=400&fit=crop&auto=format';">
+        <img
+  src="${m.poster}"
+  alt="${m.title}"
+  loading="lazy"
+  decoding="async"
+  referrerpolicy="no-referrer"
+  data-seed="${m.id}"
+  data-f1="./posters/${m.id}.jpg"
+  data-f2="${m.fallback || `https://picsum.photos/seed/${encodeURIComponent(m.id)}/400/600`}"
+  onerror="imgFallback(this)"
+>
+
       </div>
       <div class="body">
         <div class="title">${m.title}</div>
