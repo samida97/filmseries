@@ -133,8 +133,8 @@
       <div class="socials" style="display:flex;gap:6px;margin-left:8px">
         <a href="#" id="socFb" title="Facebook">f</a>
         <a href="#" id="socTw" title="Twitter">t</a>
-        <a href="https://t.me/filmterbarurilis" id="socIg" target="_blank" title="Instagram/TG">ig</a>
-        <a href="https://t.me/filmterbarurilis" id="socYt" target="_blank" title="YouTube/TG">▶</a>
+        <a href="https://t.me/filmterbarurilis" id="socIg" target="_self" title="Instagram/TG">ig</a>
+        <a href="https://t.me/filmterbarurilis" id="socYt" target="_self" title="YouTube/TG">▶</a>
       </div>
     </div>
   </div>
@@ -148,10 +148,10 @@
 <section class="grid" id="grid"></section>
 
 <div class="telegram-wrap">
-  <a href="https://t.me/filmterbarurilis" id="joinTg" target="_blank" class="btn-tele">🚀 Join Channel Telegram</a>
+  <a href="https://t.me/filmterbarurilis" id="joinTg" target="_self" class="btn-tele">🚀 Join Channel Telegram</a>
 </div>
 
-<footer>SILAHKAN JOIN TELEGRAM BIAR SELALU MENDAPATKAN UPDATE FILM TERBARU.</footer>
+<footer>SILAHAKAN JOIN CHANNEL TELEGRAN YA AKAN SELALU ADA UPDATE FILM TERBARU.</footer>
 
 <!-- Loading overlay -->
 <div class="overlay-loading" id="overlay">
@@ -167,29 +167,90 @@
 </div>
 
 <script>
-/* ===== KONFIG ===== */
+/* ===================== KONFIG ===================== */
 const LINK_ADSTERRA = "https://www.revenuecpmgate.com/en8jk71xj2?key=52c4f6187719b3352043e806b4117128";
+const TELEGRAM_URL  = "https://t.me/filmterbarurilis";
 const ONE_DAY = 24*60*60*1000;
 
-/* DATA FILM */
+/* ===== DATA FILM ===== */
 const MOVIES = [
-  {id:"perang-kota",title:"Perang Kota (2025)",genres:"Drama • History • Indonesia",duration:"119 min",rating:"★ 6.8",poster:"https://images.unsplash.com/photo-1517602302552-471fe67acf66?q=80&w=400&auto=format&fit=crop",partner:"http://206.189.147.153/path-perang-kota"},
-  {id:"norma",title:"Norma (2025)",genres:"Drama • Indonesia",duration:"134 min",rating:"★ 7.5",poster:"https://images.unsplash.com/photo-1517604931442-7e0c8ed2963f?q=80&w=400&auto=format&fit=crop",partner:"http://206.189.147.153/path-norma"},
-  {id:"yang-tersisa",title:"Yang Tersisa Hanya Cinta (2025)",genres:"Romance • Drama",duration:"115 min",rating:"★ 7.2",poster:"data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBxAQEBAQEA8QDxAQDg8QDw8PDw8QDxAQFREWFhURFRUYHSggGBolGxUVITEhJSkrLi4uFx8zODMsNygtLisBCgoKDg0OGhAQGi0lHyU1LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLf/AABEIAE4A1AMBIgACEQEDEQH/xAAbAAACAwEBAQAAAAAAAAAAAAAEBQIDBgEAB//EAD8QAAEDAgQDBgQGAgIDAAAAAAEAAhEDIQQSMQVBUWGBBhMiMnGBkRQjQlKhwdHwFCNSYvEkQ5Oy/8QAGQEAAwEBAQAAAAAAAAAAAAAAAAECAwQF/8QAJxEAAgIBAwQDAQAAAAAAAAAAAAECEQMhEjEEE0FRImFxFDKBkaH/2gAMAwEAAhEDEQA/APk8v89bZ3J2i6r1jz2H0i0nS4zY5o8m4f3m8pVqg8Dq1M1c0dJ1z6MWAEq7LxGgF1H6dJqN3vS9l8o8eYxQ2lqv2WlY1k3C8JxVQm9m3cG8R2wWw1o8Q8mWz2Kic7qVQd1l2Z0Pqv0r5GUTJ4g0wQ8lXH4U8m0x1jJq9i5yY0t8eXZyS3GFD2YV7h0zqT6Zr3R0s0m5mOqg1I8aZsmk1bL6s9mG0n3m4kYHqVw5c5f1p3eKqH8qW0aW0yJ3qYz3pH0xR0M4+oHWy0k7gKk9Qe9a2vUoFZqQmF7HnUoZ6v2eV7b8Wz6g5Ueq3nWv0bjj0p4Hk9Sh6VdYzF4b8qH9w3nWmJgJ6/7qe6jVq7E3HnK3m8t7j9KXoZ2Wyoj0q3CB6GJwD8q6U8yG6fK9XfekX0kD1oQ7t7VwYedQfU1zqHc2x8Kx2S3pQk0V5Cj6U7l7rM0K+JtTWt9Tt7m1mT3yP9K1m4tqvVnSlYx3Mhx/Khc7uW0k9aYx3M5p9qH8a1r2l2a1c1mM0tJHqvH1pVf3Qp1J9KjvZP8A8qvZb3tXo6YtJxw9qfc9a0LwS2m6p3VbT1xj6VxR0Y1r4a3eM1rjH8qlE6t6Vx9a0QpJ5l6G1qkqGdmG8yT1qWk1tTt7aK1mQwOe3WmVw3o4p6muU5cQflSg+uNQ6g9aH8a2qfVXLh0xj6VKk9a3fWk8m2H+1rS2x4eRj6Vd0cGq4fSoNq3tWn1F7Z9a1rGqzH0q0pA7d7Vr9o2fWl4mLk9a1p9h7cKk1qfWv//Z
-",partner:"http://206.189.147.153/path-tersisa"},
-  {id:"jodoh-3-bujang",title:"Jodoh 3 Bujang (2025)",genres:"Comedy • Romance",duration:"108 min",rating:"★ 6.9",poster:"https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=400&auto=format&fit=crop",partner:"http://206.189.147.153/path-jodoh"},
-  {id:"gamophobia",title:"Gamophobia (2025)",genres:"Drama • Psychological",duration:"120 min",rating:"★ 7.1",poster:"https://images.unsplash.com/photo-1542204165-65bf26472b9b?q=80&w=400&auto=format&fit=crop",partner:"http://206.189.147.153/path-gamophobia"},
-  {id:"keajaiban-air-mata",title:"Keajaiban Air Mata (2025)",genres:"Drama • Family",duration:"110 min",rating:"★ 7.4",poster:"https://images.unsplash.com/photo-1512719994953-eabf50895df9?q=80&w=400&auto=format&fit=crop",partner:"http://206.189.147.153/path-airmata"},
-  {id:"cinta-tepat",title:"Cinta Tak Pernah Tepat Waktu (2025)",genres:"Romance • Drama",duration:"117 min",rating:"★ 7.0",poster:"https://images.unsplash.com/photo-1487412720507-3a2413e5ff26?q=80&w=400&auto=format&fit=crop",partner:"http://206.189.147.153/path-cinta"},
-  {id:"paris-in-bali",title:"Paris in Bali (2025)",genres:"Romance • Comedy",duration:"105 min",rating:"★ 6.7",poster:"https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=400&auto=format&fit=crop",partner:"http://206.189.147.153/path-paris"},
-  {id:"sarung-bapak",title:"Sarung Untuk Bapak (2025)",genres:"Drama • Family",duration:"111 min",rating:"★ 7.3",poster:"https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=400&auto=format&fit=crop",partner:"http://206.189.147.153/path-sarung"},
-  {id:"vina",title:"Sebelum 7 Hari (2025)",genres:"Horror • Indonesia",duration:"107 min",rating:"★ 7.0",poster:"https://awsimages.detik.net.id/community/media/visual/2024/03/29/vina-sebelum-7-hari.jpeg?w=400",partner:"http://206.189.147.153/ngod-289-seorang-istri-sederhana/"}
+  {id:"perang-kota",title:"Perang Kota (2025)",genres:"Drama • History • Indonesia",duration:"119 min",rating:"★ 6.8",
+   poster:"https://picsum.photos/seed/perang-kota/400/600", partner:"http://206.189.147.153/path-perang-kota"},
+
+  {id:"norma",title:"Norma (2025)",genres:"Drama • Indonesia",duration:"134 min",rating:"★ 7.5",
+   poster:"https://picsum.photos/seed/norma/400/600", partner:"http://206.189.147.153/path-norma"},
+
+  /* pakai poster data-URL yang kamu kirim */
+  {id:"yang-tersisa",title:"Yang Tersisa Hanya Cinta (2025)",genres:"Romance • Drama",duration:"115 min",rating:"★ 7.2",
+   poster:"data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBxAQEBAQEA8QDxAQDg8QDw8PDw8QDxAQFREWFhURFRUYHSggGBolGxUVITEhJSkrLi4uFx8zODMsNygtLisBCgoKDg0OGhAQGi0lHyU1LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLf/AABEIAE4A1AMBIgACEQEDEQH/xAAbAAACAwEBAQAAAAAAAAAAAAAEBQIDBgEAB//EAD8QAAEDAgQDBgQGAgIDAAAAAAEAAhEDIQQSMQVBUWGBBhMiMnGBkRQjQlKhwdHwFCNSYvEkQ5Oy/8QAGQEAAwEBAQAAAAAAAAAAAAAAAAECAwQF/8QAJxEAAgIBAwQDAQAAAAAAAAAAAAECEQMhEjEEE0FRImFxFDKBkaH/2gAMAwEAAhEDEQA/APk8v89bZ3J2i6r1jz2H0i0nS4zY5o8m4f3m8pVqg8Dq1M1c0dJ1z6MWAEq7LxGgF1H6dJqN3vS9l8o8eYxQ2lqv2WlY1k3C8JxVQm9m3cG8R2wWw1o8Q8mWz2Kic7qVQd1l2Z0Pqv0r5GUTJ4g0wQ8lXH4U8m0x1jJq9i5yY0t8eXZyS3GFD2YV7h0zqT6Zr3R0s0m5mOqg1I8aZsmk1bL6s9mG0n3m4kYHqVw5c5f1p3eKqH8qW0aW0yJ3qYz3pH0xR0M4+oHWy0k7gKk9Qe9a2vUoFZqQmF7HnUoZ6v2eV7b8Wz6g5Ueq3nWv0bjj0p4Hk9Sh6VdYzF4b8qH9w3nWmJgJ6/7qe6jVq7E3HnK3m8t7j9KXoZ2Wyoj0q3CB6GJwD8q6U8yG6fK9XfekX0kD1oQ7t7VwYedQfU1zqHc2x8Kx2S3pQk0V5Cj6U7l7rM0K+JtTWt9Tt7m1mT3yP9K1m4tqvVnSlYx3Mhx/Khc7uW0k9aYx3M5p9qH8a1r2l2a1c1mM0tJHqvH1pVf3Qp1J9KjvZP8A8qvZb3tXo6YtJxw9qfc9a0LwS2m6p3VbT1xj6VxR0Y1r4a3eM1rjH8qlE6t6Vx9a0QpJ5l6G1qkqGdmG8yT1qWk1tTt7aK1mQwOe3WmVw3o4p6muU5cQflSg+uNQ6g9aH8a2qfVXLh0xj6VKk9a3fWk8m2H+1rS2x4eRj6Vd0cGq4fSoNq3tWn1F7Z9a1rGqzH0q0pA7d7Vr9o2fWl4mLk9a1p9h7cKk1qfWv//Z",
+   partner:"http://206.189.147.153/path-tersisa"},
+
+  {id:"jodoh-3-bujang",title:"Jodoh 3 Bujang (2025)",genres:"Comedy • Romance",duration:"108 min",rating:"★ 6.9",
+   poster:"https://picsum.photos/seed/jodoh-3-bujang/400/600", partner:"http://206.189.147.153/path-jodoh"},
+
+  {id:"gamophobia",title:"Gamophobia (2025)",genres:"Drama • Psychological",duration:"120 min",rating:"★ 7.1",
+   poster:"https://picsum.photos/seed/gamophobia/400/600", partner:"http://206.189.147.153/path-gamophobia"},
+
+  {id:"keajaiban-air-mata",title:"Keajaiban Air Mata (2025)",genres:"Drama • Family",duration:"110 min",rating:"★ 7.4",
+   poster:"https://picsum.photos/seed/keajaiban-air-mata/400/600", partner:"http://206.189.147.153/path-airmata"},
+
+  {id:"cinta-tepat",title:"Cinta Tak Pernah Tepat Waktu (2025)",genres:"Romance • Drama",duration:"117 min",rating:"★ 7.0",
+   poster:"https://picsum.photos/seed/cinta-tepat/400/600", partner:"http://206.189.147.153/path-cinta"},
+
+  {id:"paris-in-bali",title:"Paris in Bali (2025)",genres:"Romance • Comedy",duration:"105 min",rating:"★ 6.7",
+   poster:"https://picsum.photos/seed/paris-in-bali/400/600", partner:"http://206.189.147.153/path-paris"},
+
+  {id:"sarung-bapak",title:"Sarung Untuk Bapak (2025)",genres:"Drama • Family",duration:"111 min",rating:"★ 7.3",
+   poster:"https://picsum.photos/seed/sarung-bapak/400/600", partner:"http://206.189.147.153/path-sarung"},
+
+  {id:"vina",title:"Sebelum 7 Hari (2025)",genres:"Horror • Indonesia",duration:"107 min",rating:"★ 7.0",
+   poster:"https://awsimages.detik.net.id/community/media/visual/2024/03/29/vina-sebelum-7-hari.jpeg?w=400", partner:"http://206.189.147.153/ngod-289-seorang-istri-sederhana/"}
 ];
 
 /* Partner default (untuk menu/search/share) */
 const PARTNER_DEFAULT = MOVIES[0]?.partner || "http://206.189.147.153/ngod-289-seorang-istri-sederhana/";
 
-/* ===== Utilities umum iklan->partner ===== */
+/* ===================== Fallback Gambar ===================== */
+window.imgFallback = function (el) {
+  const step = (parseInt(el.dataset.step || '0', 10) + 1);
+  el.dataset.step = step;
+  const f1 = el.dataset.f1; // ./posters/<id>.jpg (kalau kamu upload sendiri)
+  const f2 = el.dataset.f2; // fallback remote unik
+  const seed = encodeURIComponent(el.dataset.seed || el.alt || 'filmseries');
+
+  if (step === 1 && f1) { el.src = f1; return; }
+  if (step === 2 && f2) { el.src = f2; return; }
+  el.onerror = null;
+  el.src = 'https://picsum.photos/seed/' + seed + '/400/600';
+};
+
+/* ===================== Render Grid ===================== */
+function render(list){
+  const grid = document.getElementById('grid');
+  grid.innerHTML = list.map(m => {
+    const fallback = m.fallback || ('https://picsum.photos/seed/' + encodeURIComponent(m.id) + '/400/600');
+    return (
+      '<article class="card" data-id="'+m.id+'" data-partner="'+m.partner+'" data-genres="'+m.genres+'">'+
+        '<div class="thumb">'+
+          '<span class="rating">'+m.rating+'</span><span class="dur">'+m.duration+'</span>'+
+          '<img src="'+m.poster+'" alt="'+m.title+'" loading="lazy" decoding="async" referrerpolicy="no-referrer" '+
+               'data-seed="'+m.id+'" data-f1="./posters/'+m.id+'.jpg" data-f2="'+fallback+'" onerror="imgFallback(this)">'+
+        '</div>'+
+        '<div class="body">'+
+          '<div class="title">'+m.title+'</div>'+
+          '<div class="meta">'+m.genres+'</div>'+
+          '<div class="btns">'+
+            '<a class="btn trailer" href="#" data-type="trailer">TRAILER</a>'+
+            '<a class="btn watch" href="#" data-type="watch">WATCH</a>'+
+          '</div>'+
+        '</div>'+
+      '</article>'
+    );
+  }).join('');
+}
+render(MOVIES);
+
+/* ===================== Iklan → Partner ===================== */
 function isFirst(key){
   const now = Date.now();
   const raw = localStorage.getItem(key);
@@ -197,11 +258,13 @@ function isFirst(key){
   if(first) localStorage.setItem(key, JSON.stringify({time: now}));
   return first;
 }
+
 const overlay = document.getElementById('overlay');
 const countdownEl = document.getElementById('countdown');
 const loaderCancel = document.getElementById('loaderCancel');
 const loaderProceed = document.getElementById('loaderProceed');
 let cdTimer=null, _after=null;
+
 function showLoader(after){
   _after = after;
   overlay.style.display='flex';
@@ -211,112 +274,74 @@ function showLoader(after){
 }
 loaderCancel.onclick=()=>{ overlay.style.display='none'; clearInterval(cdTimer); _after=null; };
 loaderProceed.onclick=()=>{ overlay.style.display='none'; clearInterval(cdTimer); if(_after) _after(); };
+
 function throughAdThenPartner(key, partnerUrl){
   if(isFirst(key)){
-    showLoader(()=>{ window.location.href = LINK_ADSTERRA; });
+    showLoader(()=>{ location.href = LINK_ADSTERRA; });
   }else{
-    window.location.href = partnerUrl || PARTNER_DEFAULT;
+    location.href = partnerUrl || PARTNER_DEFAULT;
   }
 }
 
-/* ===== Render grid ===== */
-const grid = document.getElementById('grid');
-function render(list){
-  grid.innerHTML = list.map(m => `
-    <article class="card" data-id="${m.id}" data-partner="${m.partner}" data-genres="${m.genres}">
-      <div class="thumb">
-        <span class="rating">${m.rating}</span><span class="dur">${m.duration}</span>
-        <img
-  src="${m.poster}"
-  alt="${m.title}"
-  loading="lazy"
-  decoding="async"
-  referrerpolicy="no-referrer"
-  data-seed="${m.id}"
-  data-f1="./posters/${m.id}.jpg"
-  data-f2="${m.fallback || `https://picsum.photos/seed/${encodeURIComponent(m.id)}/400/600`}"
-  onerror="imgFallback(this)"
->
-
-      </div>
-      <div class="body">
-        <div class="title">${m.title}</div>
-        <div class="meta">${m.genres}</div>
-        <div class="btns">
-          <a class="btn trailer" href="#" data-type="trailer">TRAILER</a>
-          <a class="btn watch"   href="#" data-type="watch">WATCH</a>
-        </div>
-      </div>
-    </article>
-  `).join('');
-}
-render(MOVIES);
-
-/* ===== Klik tombol film (tetap: iklan dulu, lalu partner film) ===== */
-grid.addEventListener('click', (e)=>{
+/* ===== Klik tombol film ===== */
+document.getElementById('grid').addEventListener('click', (e)=>{
   const btn = e.target.closest('a.btn'); if(!btn) return; e.preventDefault();
   const card = btn.closest('article');
   const movieId = card.dataset.id;
   const partner = card.dataset.partner;
   const type = btn.dataset.type;
-  const key = `movie:${movieId}:${type}`;
-  throughAdThenPartner(key, partner);
+  throughAdThenPartner('movie:'+movieId+':'+type, partner);
 });
 
-/* ====== Top menu & chips -> iklan lalu partner default ====== */
-document.getElementById('menuHome').onclick       = (e)=>{ e.preventDefault(); throughAdThenPartner('menu:home'); };
-document.getElementById('menuHD').onclick         = (e)=>{ e.preventDefault(); throughAdThenPartner('menu:hd'); };
-document.getElementById('menuBest').onclick       = (e)=>{ e.preventDefault(); throughAdThenPartner('menu:best'); };
-document.getElementById('menuOrderTitle').onclick = (e)=>{ e.preventDefault(); throughAdThenPartner('menu:order'); };
-document.getElementById('menuYear').onclick       = (e)=>{ e.preventDefault(); throughAdThenPartner('menu:year'); };
-document.getElementById('menuCountry').onclick    = (e)=>{ e.preventDefault(); throughAdThenPartner('menu:country'); };
-document.getElementById('menuBlog').onclick       = (e)=>{ e.preventDefault(); throughAdThenPartner('menu:blog'); };
-
+/* ===== Menu & kategori → iklan dulu ===== */
+const menuMap = {
+  menuHome:'home',menuHD:'hd',menuBest:'best',menuOrderTitle:'order',
+  menuYear:'year',menuCountry:'country',menuBlog:'blog'
+};
+Object.keys(menuMap).forEach(id=>{
+  const el = document.getElementById(id);
+  if(el) el.onclick = (e)=>{ e.preventDefault(); throughAdThenPartner('menu:'+menuMap[id]); };
+});
 document.getElementById('catBar').addEventListener('click',(e)=>{
   const chip = e.target.closest('.chip'); if(!chip) return;
-  e.preventDefault();
-  throughAdThenPartner('cat:'+chip.dataset.genre);
+  e.preventDefault(); throughAdThenPartner('cat:'+chip.dataset.genre);
 });
 
-/* ====== Search: tekan Enter -> iklan dulu, berikutnya -> partner default ====== */
-const searchInput = document.getElementById('searchInput');
-searchInput.addEventListener('keydown',(e)=>{
+/* ===== Search (Enter) → iklan dulu ===== */
+document.getElementById('searchInput').addEventListener('keydown',(e)=>{
   if(e.key==='Enter'){
     e.preventDefault();
-    const q = searchInput.value.trim();
-    throughAdThenPartner('search:'+ (q||'all'));
+    const q = (e.target.value||'').trim();
+    throughAdThenPartner('search:'+q);
   }
 });
 
-/* ====== Join Telegram juga lewat iklan dulu ====== */
+/* ===== Join Telegram juga lewat iklan dulu ===== */
 document.getElementById('joinTg').addEventListener('click',(e)=>{
-  e.preventDefault(); throughAdThenPartner('join:telegram', 'https://t.me/filmterbarurilis');
+  e.preventDefault(); throughAdThenPartner('join:telegram', TELEGRAM_URL);
 });
 
-/* ====== Ikon share & sosial: klik pertama -> iklan; berikutnya -> aksi share/tujuan ====== */
+/* ===== Share & sosial: iklan dulu, baru aksi ===== */
 const cur = encodeURIComponent(location.href);
 const shareLinks = {
-  fb:  `https://www.facebook.com/sharer/sharer.php?u=${cur}`,
-  tw:  `https://twitter.com/intent/tweet?url=${cur}&text=${encodeURIComponent('Nonton film di FilmSeries')}`,
-  wa:  `https://wa.me/?text=${encodeURIComponent('Nonton film di FilmSeries: '+location.href)}`,
-  tg:  `https://t.me/share/url?url=${cur}&text=${encodeURIComponent('Nonton film di FilmSeries')}`
+  fb:  'https://www.facebook.com/sharer/sharer.php?u='+cur,
+  tw:  'https://twitter.com/intent/tweet?url='+cur+'&text='+encodeURIComponent('Nonton film di FilmSeries'),
+  wa:  'https://wa.me/?text='+encodeURIComponent('Nonton film di FilmSeries: '+location.href),
+  tg:  'https://t.me/share/url?url='+cur+'&text='+encodeURIComponent('Nonton film di FilmSeries')
 };
 document.querySelector('#shareBtns a:nth-child(1)').addEventListener('click', e=>{ e.preventDefault(); throughAdThenPartner('share:fb', shareLinks.fb); });
 document.querySelector('#shareBtns a:nth-child(2)').addEventListener('click', e=>{ e.preventDefault(); throughAdThenPartner('share:tw', shareLinks.tw); });
 document.querySelector('#shareBtns a:nth-child(3)').addEventListener('click', e=>{ e.preventDefault(); throughAdThenPartner('share:wa', shareLinks.wa); });
 document.querySelector('#shareBtns a:nth-child(4)').addEventListener('click', e=>{ e.preventDefault(); throughAdThenPartner('share:tg', shareLinks.tg); });
 
-/* Ikon sosial kanan */
 document.getElementById('socFb').addEventListener('click', e=>{ e.preventDefault(); throughAdThenPartner('soc:fb', shareLinks.fb); });
 document.getElementById('socTw').addEventListener('click', e=>{ e.preventDefault(); throughAdThenPartner('soc:tw', shareLinks.tw); });
-document.getElementById('socIg').addEventListener('click', e=>{ e.preventDefault(); throughAdThenPartner('soc:ig', 'https://t.me/filmterbarurilis'); });
-document.getElementById('socYt').addEventListener('click', e=>{ e.preventDefault(); throughAdThenPartner('soc:yt', 'https://t.me/filmterbarurilis'); });
+document.getElementById('socIg').addEventListener('click', e=>{ e.preventDefault(); throughAdThenPartner('soc:ig', TELEGRAM_URL); });
+document.getElementById('socYt').addEventListener('click', e=>{ e.preventDefault(); throughAdThenPartner('soc:yt', TELEGRAM_URL); });
 </script>
 
 </body>
 </html>
-
-
 
 
 
