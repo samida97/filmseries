@@ -8,10 +8,43 @@
   :root{
     --bg:#0f0f10; --card:#17181b; --muted:#a9b0bd;
     --watch:#e91e63; --trailer:#2ecc71; --tele:#0088cc; --accent:#f5c344;
+    --top1:#b70d3a; --top2:#e41455; --cat:#f5b301;
   }
   *{box-sizing:border-box}
   body{margin:0;background:var(--bg);color:#fff;font-family:system-ui,Arial,sans-serif}
-  header{max-width:1100px;margin:18px auto 6px;padding:0 16px;display:flex;align-items:center;gap:10px}
+
+  /* ===== TOP NAV ===== */
+  .topbar{position:sticky;top:0;z-index:1000;background:linear-gradient(180deg,var(--top1),var(--top2));}
+  .toprow{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:220px 1fr 420px;gap:12px;align-items:center;padding:10px 14px}
+  .brand{display:flex;align-items:center;gap:8px;font-weight:900;font-size:22px;letter-spacing:.2px}
+  .brand .logo{width:26px;height:26px;border-radius:6px;background:#fff;display:inline-grid;place-items:center;color:#e41455;font-weight:900}
+  .search{display:flex;align-items:center}
+  .search input{width:100%; background:#ffffff22; border:1px solid #ffffff30; color:#fff;
+    padding:10px 12px;border-radius:8px;outline:none}
+  .menu{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap}
+  .menu a{color:#fff;text-decoration:none;font-weight:700;font-size:13px;background:#0000001a;
+    padding:8px 10px;border-radius:8px}
+  .menu a:hover{background:#00000028}
+
+  .subrow{background:var(--cat)}
+  .subrow-inner{max-width:1200px;margin:0 auto;padding:6px 14px;display:flex;align-items:center;gap:8px}
+  .cats{display:flex;gap:10px;overflow:auto;padding-bottom:4px}
+  .chip{background:#00000022;color:#111;font-weight:800;border-radius:999px;padding:6px 10px;white-space:nowrap;cursor:pointer}
+  .chip.active{background:#00000040}
+  .spacer{flex:1}
+
+  .shares a,.socials a{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:8px;color:#fff;text-decoration:none}
+  .shares a:nth-child(1){background:#1877f2} /* fb */
+  .shares a:nth-child(2){background:#1da1f2} /* tw */
+  .shares a:nth-child(3){background:#25d366} /* wa */
+  .shares a:nth-child(4){background:#0088cc} /* tg */
+  .socials a:nth-child(1){background:#1877f2}
+  .socials a:nth-child(2){background:#1da1f2}
+  .socials a:nth-child(3){background:#d62976}
+  .socials a:nth-child(4){background:#ff0000}
+
+  /* ===== GRID ===== */
+  header{max-width:1100px;margin:14px auto 6px;padding:0 16px;display:flex;align-items:center;gap:10px}
   header h1{margin:0;font-size:22px}
   header .sub{color:var(--muted);font-size:14px}
   .grid{max-width:1100px;margin:8px auto 30px;padding:0 16px;
@@ -25,7 +58,7 @@
   .dur{position:absolute;right:8px;top:8px;background:rgba(255,255,255,.12);font-size:12px;padding:4px 6px;border-radius:8px;color:#eee}
   .body{padding:12px;display:flex;flex-direction:column;gap:8px;flex:1}
   .title{font-weight:800;line-height:1.2}
-  .meta{color:var(--muted);font-size:12px;min-height:30px}
+  .meta{color:#cbd5e1;font-size:12px;min-height:30px}
   .btns{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:auto}
   .btn{display:inline-block;text-align:center;border-radius:10px;padding:10px 0;
        font-weight:800;color:#fff;text-decoration:none;cursor:pointer;transition:filter .2s}
@@ -36,7 +69,7 @@
   .btn-tele{background:var(--tele);padding:14px 26px;border-radius:12px;
             text-decoration:none;color:#fff;font-weight:800;
             box-shadow:0 4px 14px rgba(0,0,0,.3);display:inline-block}
-  footer{max-width:1100px;margin:0 auto 24px;padding:0 16px;color:var(--muted);font-size:12px}
+  footer{max-width:1100px;margin:0 auto 24px;padding:0 16px;color:#94a3b8;font-size:12px}
 
   /* Loading overlay */
   .overlay-loading{position:fixed;inset:0;background:rgba(0,0,0,.75);display:none;align-items:center;justify-content:center;z-index:9999}
@@ -48,25 +81,77 @@
   .ghost{background:transparent;border:1px solid rgba(255,255,255,.08);color:#e5e7eb;padding:10px 12px;border-radius:10px;cursor:pointer}
   .primary{background:var(--watch);border:0;color:#fff;padding:10px 14px;border-radius:10px;cursor:pointer}
 
-  @media(max-width:480px){header h1{font-size:18px}.grid{gap:12px}}
+  @media(max-width:980px){.toprow{grid-template-columns:170px 1fr 1fr}}
+  @media(max-width:640px){
+    .menu{display:none}
+    .toprow{grid-template-columns:130px 1fr}
+    header{margin-top:8px}
+  }
 </style>
 </head>
 <body>
 
+<!-- ====== TOP NAV ====== -->
+<div class="topbar">
+  <div class="toprow">
+    <div class="brand"><span class="logo">🎬</span> FILMSERIES</div>
+    <div class="search"><input id="searchInput" type="search" placeholder="Search Movie" autocomplete="off"></div>
+    <nav class="menu">
+      <a href="#" id="menuHome">Home</a>
+      <a href="#" id="menuHD">HD</a>
+      <a href="#" id="menuBest">Best Rating</a>
+      <a href="#" id="menuOrderTitle">Order by title</a>
+      <a href="#categories">Genre ▾</a>
+      <a href="#" id="menuYear">Year</a>
+      <a href="#" id="menuCountry">Country</a>
+      <a href="#" id="menuBlog">Blog</a>
+    </nav>
+  </div>
+  <div class="subrow" id="categories">
+    <div class="subrow-inner">
+      <div class="cats" id="catBar">
+        <span class="chip active" data-genre="All">HOME</span>
+        <span class="chip" data-genre="Action">ACTION</span>
+        <span class="chip" data-genre="Drama">DRAMA</span>
+        <span class="chip" data-genre="Science">SCIENCE FICTION</span>
+        <span class="chip" data-genre="Fantasy">FANTASY</span>
+        <span class="chip" data-genre="Crime">CRIME</span>
+        <span class="chip" data-genre="Mystery">MYSTERY</span>
+        <span class="chip" data-genre="Thriller">THRILLER</span>
+        <span class="chip" data-genre="Romance">ROMANCE</span>
+        <span class="chip" data-genre="Comedy">COMEDY</span>
+        <span class="chip" data-genre="Horror">HORROR</span>
+        <span class="chip" data-genre="Family">FAMILY</span>
+      </div>
+      <div class="spacer"></div>
+      <div class="shares" id="shareBtns">
+        <a href="#" title="Share FB">f</a>
+        <a href="#" title="Tweet">t</a>
+        <a href="#" title="WhatsApp">wa</a>
+        <a href="#" title="Telegram">tg</a>
+      </div>
+      <div class="socials" style="display:flex;gap:6px;margin-left:8px">
+        <a href="#" id="socFb" title="Facebook">f</a>
+        <a href="#" id="socTw" title="Twitter">t</a>
+        <a href="https://t.me/filmterbarurilis" id="socIg" target="_blank" title="Instagram/TG">ig</a>
+        <a href="https://t.me/filmterbarurilis" id="socYt" target="_blank" title="YouTube/TG">▶</a>
+      </div>
+    </div>
+  </div>
+</div>
+
 <header>
-  <img src="https://i.ibb.co/7jZ0jX0/cinema.png" alt="" width="28" height="28">
   <h1>FilmSeries</h1>
   <span class="sub">Koleksi Terbaru</span>
 </header>
 
 <section class="grid" id="grid"></section>
 
-<!-- Tombol Join Telegram -->
 <div class="telegram-wrap">
-  <a href="https://t.me/filmterbarurilis" target="_blank" class="btn-tele">🚀 Join Channel Telegram</a>
+  <a href="https://t.me/filmterbarurilis" id="joinTg" target="_blank" class="btn-tele">🚀 Join Channel Telegram</a>
 </div>
 
-<footer>Tip: klik pertama tiap film membuka iklan (aman), klik berikutnya langsung ke partner. Reset otomatis 24 jam per film & per tombol.</footer>
+<footer>SILAHKAN JOIN TELEGRAM BIAR SELALU MENDAPATKAN UPDATE FILM TERBARU.</footer>
 
 <!-- Loading overlay -->
 <div class="overlay-loading" id="overlay">
@@ -86,7 +171,7 @@
 const LINK_ADSTERRA = "https://www.revenuecpmgate.com/en8jk71xj2?key=52c4f6187719b3352043e806b4117128";
 const ONE_DAY = 24*60*60*1000;
 
-/* 10 film contoh (ganti poster/partner kalau perlu) */
+/* DATA FILM */
 const MOVIES = [
   {id:"perang-kota",title:"Perang Kota (2025)",genres:"Drama • History • Indonesia",duration:"119 min",rating:"★ 6.8",poster:"https://images.unsplash.com/photo-1517602302552-471fe67acf66?q=80&w=400&auto=format&fit=crop",partner:"http://206.189.147.153/path-perang-kota"},
   {id:"norma",title:"Norma (2025)",genres:"Drama • Indonesia",duration:"134 min",rating:"★ 7.5",poster:"https://images.unsplash.com/photo-1517604931442-7e0c8ed2963f?q=80&w=400&auto=format&fit=crop",partner:"http://206.189.147.153/path-norma"},
@@ -100,76 +185,126 @@ const MOVIES = [
   {id:"vina",title:"Sebelum 7 Hari (2025)",genres:"Horror • Indonesia",duration:"107 min",rating:"★ 7.0",poster:"https://awsimages.detik.net.id/community/media/visual/2024/03/29/vina-sebelum-7-hari.jpeg?w=400",partner:"http://206.189.147.153/ngod-289-seorang-istri-sederhana/"}
 ];
 
-/* ===== render grid ===== */
-const grid = document.getElementById('grid');
-grid.innerHTML = MOVIES.map(m => `
-  <article class="card" data-id="${m.id}" data-partner="${m.partner}">
-    <div class="thumb">
-      <span class="rating">${m.rating}</span><span class="dur">${m.duration}</span>
-      <img
-        src="${m.poster}"
-        alt="${m.title}"
-        loading="lazy"
-        decoding="async"
-        referrerpolicy="no-referrer"
-        onerror="this.onerror=null; this.src='https://placehold.co/300x450?text='+encodeURIComponent(this.alt);"
-      >
+/* Partner default (untuk menu/search/share) */
+const PARTNER_DEFAULT = MOVIES[0]?.partner || "http://206.189.147.153/ngod-289-seorang-istri-sederhana/";
 
-    </div>
-    <div class="body">
-      <div class="title">${m.title}</div>
-      <div class="meta">${m.genres}</div>
-      <div class="btns">
-        <a class="btn trailer" href="#" data-type="trailer">TRAILER</a>
-        <a class="btn watch"   href="#" data-type="watch">WATCH</a>
-      </div>
-    </div>
-  </article>
-`).join('');
-
-/* ===== handler klik + loading screen ===== */
+/* ===== Utilities umum iklan->partner ===== */
+function isFirst(key){
+  const now = Date.now();
+  const raw = localStorage.getItem(key);
+  const first = !raw || (now - JSON.parse(raw).time) > ONE_DAY;
+  if(first) localStorage.setItem(key, JSON.stringify({time: now}));
+  return first;
+}
 const overlay = document.getElementById('overlay');
 const countdownEl = document.getElementById('countdown');
 const loaderCancel = document.getElementById('loaderCancel');
 const loaderProceed = document.getElementById('loaderProceed');
-let cdTimer = null;
-
-grid.addEventListener('click', (e)=>{
-  const btn = e.target.closest('a.btn'); if(!btn) return; e.preventDefault();
-  const card = btn.closest('.card');
-  const movieId = card.dataset.id;
-  const partner = card.dataset.partner;
-  const type = btn.dataset.type;
-  const key = `${movieId}:${type}`;
-  const now = Date.now();
-  const raw = localStorage.getItem(key);
-  const first = !raw || (now - JSON.parse(raw).time) > ONE_DAY;
-
-  if(first){
-    localStorage.setItem(key, JSON.stringify({time: now}));
-    showLoader(() => { window.location.href = LINK_ADSTERRA; });
-  }else{
-    safeNavigate(partner);
-  }
-});
-
-function showLoader(onProceed){
+let cdTimer=null, _after=null;
+function showLoader(after){
+  _after = after;
   overlay.style.display='flex';
   let t=3; countdownEl.textContent=t;
   clearInterval(cdTimer);
   cdTimer=setInterval(()=>{ t--; countdownEl.textContent=t; if(t<=0){ clearInterval(cdTimer);} },1000);
-  loaderCancel.onclick=()=>{ overlay.style.display='none'; clearInterval(cdTimer); };
-  loaderProceed.onclick=()=>{ overlay.style.display='none'; clearInterval(cdTimer); onProceed(); };
+}
+loaderCancel.onclick=()=>{ overlay.style.display='none'; clearInterval(cdTimer); _after=null; };
+loaderProceed.onclick=()=>{ overlay.style.display='none'; clearInterval(cdTimer); if(_after) _after(); };
+function throughAdThenPartner(key, partnerUrl){
+  if(isFirst(key)){
+    showLoader(()=>{ window.location.href = LINK_ADSTERRA; });
+  }else{
+    window.location.href = partnerUrl || PARTNER_DEFAULT;
+  }
 }
 
-function safeNavigate(url){
-  try{ window.location.href=url; }
-  catch(e){ alert('Gagal membuka link. Salin manual:\n\n'+url); }
+/* ===== Render grid ===== */
+const grid = document.getElementById('grid');
+function render(list){
+  grid.innerHTML = list.map(m => `
+    <article class="card" data-id="${m.id}" data-partner="${m.partner}" data-genres="${m.genres}">
+      <div class="thumb">
+        <span class="rating">${m.rating}</span><span class="dur">${m.duration}</span>
+        <img src="${m.poster}" alt="${m.title}" loading="lazy" decoding="async" referrerpolicy="no-referrer"
+             onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=400&fit=crop&auto=format';">
+      </div>
+      <div class="body">
+        <div class="title">${m.title}</div>
+        <div class="meta">${m.genres}</div>
+        <div class="btns">
+          <a class="btn trailer" href="#" data-type="trailer">TRAILER</a>
+          <a class="btn watch"   href="#" data-type="watch">WATCH</a>
+        </div>
+      </div>
+    </article>
+  `).join('');
 }
+render(MOVIES);
+
+/* ===== Klik tombol film (tetap: iklan dulu, lalu partner film) ===== */
+grid.addEventListener('click', (e)=>{
+  const btn = e.target.closest('a.btn'); if(!btn) return; e.preventDefault();
+  const card = btn.closest('article');
+  const movieId = card.dataset.id;
+  const partner = card.dataset.partner;
+  const type = btn.dataset.type;
+  const key = `movie:${movieId}:${type}`;
+  throughAdThenPartner(key, partner);
+});
+
+/* ====== Top menu & chips -> iklan lalu partner default ====== */
+document.getElementById('menuHome').onclick       = (e)=>{ e.preventDefault(); throughAdThenPartner('menu:home'); };
+document.getElementById('menuHD').onclick         = (e)=>{ e.preventDefault(); throughAdThenPartner('menu:hd'); };
+document.getElementById('menuBest').onclick       = (e)=>{ e.preventDefault(); throughAdThenPartner('menu:best'); };
+document.getElementById('menuOrderTitle').onclick = (e)=>{ e.preventDefault(); throughAdThenPartner('menu:order'); };
+document.getElementById('menuYear').onclick       = (e)=>{ e.preventDefault(); throughAdThenPartner('menu:year'); };
+document.getElementById('menuCountry').onclick    = (e)=>{ e.preventDefault(); throughAdThenPartner('menu:country'); };
+document.getElementById('menuBlog').onclick       = (e)=>{ e.preventDefault(); throughAdThenPartner('menu:blog'); };
+
+document.getElementById('catBar').addEventListener('click',(e)=>{
+  const chip = e.target.closest('.chip'); if(!chip) return;
+  e.preventDefault();
+  throughAdThenPartner('cat:'+chip.dataset.genre);
+});
+
+/* ====== Search: tekan Enter -> iklan dulu, berikutnya -> partner default ====== */
+const searchInput = document.getElementById('searchInput');
+searchInput.addEventListener('keydown',(e)=>{
+  if(e.key==='Enter'){
+    e.preventDefault();
+    const q = searchInput.value.trim();
+    throughAdThenPartner('search:'+ (q||'all'));
+  }
+});
+
+/* ====== Join Telegram juga lewat iklan dulu ====== */
+document.getElementById('joinTg').addEventListener('click',(e)=>{
+  e.preventDefault(); throughAdThenPartner('join:telegram', 'https://t.me/filmterbarurilis');
+});
+
+/* ====== Ikon share & sosial: klik pertama -> iklan; berikutnya -> aksi share/tujuan ====== */
+const cur = encodeURIComponent(location.href);
+const shareLinks = {
+  fb:  `https://www.facebook.com/sharer/sharer.php?u=${cur}`,
+  tw:  `https://twitter.com/intent/tweet?url=${cur}&text=${encodeURIComponent('Nonton film di FilmSeries')}`,
+  wa:  `https://wa.me/?text=${encodeURIComponent('Nonton film di FilmSeries: '+location.href)}`,
+  tg:  `https://t.me/share/url?url=${cur}&text=${encodeURIComponent('Nonton film di FilmSeries')}`
+};
+document.querySelector('#shareBtns a:nth-child(1)').addEventListener('click', e=>{ e.preventDefault(); throughAdThenPartner('share:fb', shareLinks.fb); });
+document.querySelector('#shareBtns a:nth-child(2)').addEventListener('click', e=>{ e.preventDefault(); throughAdThenPartner('share:tw', shareLinks.tw); });
+document.querySelector('#shareBtns a:nth-child(3)').addEventListener('click', e=>{ e.preventDefault(); throughAdThenPartner('share:wa', shareLinks.wa); });
+document.querySelector('#shareBtns a:nth-child(4)').addEventListener('click', e=>{ e.preventDefault(); throughAdThenPartner('share:tg', shareLinks.tg); });
+
+/* Ikon sosial kanan */
+document.getElementById('socFb').addEventListener('click', e=>{ e.preventDefault(); throughAdThenPartner('soc:fb', shareLinks.fb); });
+document.getElementById('socTw').addEventListener('click', e=>{ e.preventDefault(); throughAdThenPartner('soc:tw', shareLinks.tw); });
+document.getElementById('socIg').addEventListener('click', e=>{ e.preventDefault(); throughAdThenPartner('soc:ig', 'https://t.me/filmterbarurilis'); });
+document.getElementById('socYt').addEventListener('click', e=>{ e.preventDefault(); throughAdThenPartner('soc:yt', 'https://t.me/filmterbarurilis'); });
 </script>
 
 </body>
 </html>
+
 
 
 
